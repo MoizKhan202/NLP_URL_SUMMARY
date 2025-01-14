@@ -1,0 +1,11 @@
+# Streamlit for the web interface
+streamlit
+
+# Hugging Face Transformers for summarization
+transformers
+
+# BeautifulSoup for text extraction
+beautifulsoup4
+
+# Requests for fetching URL content
+requests
