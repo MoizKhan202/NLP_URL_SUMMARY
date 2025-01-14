@@ -5,12 +5,12 @@ import requests
 import re
 
 # Title of the app
-st.title("Fast URL-Based Summarizer 🚀")
+st.title("MHU URL-Based Summarizer 🚀")
 
 # Load a lightweight summarization model
 @st.cache_resource
 def load_summarizer():
-    return pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+    return pipeline("summarization", model="t5-small")
 
 summarizer = load_summarizer()
 
