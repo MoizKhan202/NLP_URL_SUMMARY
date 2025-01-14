@@ -5,16 +5,16 @@ import requests
 import re
 
 # Title of the app
-st.title("Enhanced URL-Based Summary Generator 📰")
+st.title("Fast URL-Based Summarizer 🚀")
 
-# Initialize the summarization model
+# Load a lightweight summarization model
 @st.cache_resource
 def load_summarizer():
-    return pipeline("summarization", model="facebook/bart-large-cnn")
+    return pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
 
 summarizer = load_summarizer()
 
-# Preprocessing function to clean noisy text
+# Preprocessing function to clean text
 def preprocess_text(text):
     """Clean and preprocess extracted text."""
     text = re.sub(r'\n+', '\n', text)  # Replace multiple newlines with a single newline
@@ -26,7 +26,7 @@ def preprocess_text(text):
 def extract_text_from_url(url):
     """Extract and clean text from a webpage."""
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -58,7 +58,7 @@ if url:
         # Generate a summary
         st.info("Generating summary...")
         try:
-            summary = summarizer(context, max_length=130, min_length=30, do_sample=False)
+            summary = summarizer(context, max_length=100, min_length=25, do_sample=False)
             st.header("Summary")
             st.write(summary[0]['summary_text'])
         except Exception as e:
