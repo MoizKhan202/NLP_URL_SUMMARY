@@ -44,6 +44,13 @@ def extract_text_from_url(url):
         st.error(f"Error extracting text: {e}")
         return None
 
+# Function to split text into chunks
+def chunk_text(text, max_tokens=512):
+    """Split text into chunks of a specified token limit."""
+    words = text.split()
+    for i in range(0, len(words), max_tokens):
+        yield " ".join(words[i:i + max_tokens])
+
 # Sidebar for URL input
 st.sidebar.title("Input Section")
 url = st.sidebar.text_input("Enter a URL to summarize:")
@@ -55,11 +62,16 @@ if url:
         st.success("Text extracted and cleaned successfully!")
         #st.text_area("Extracted Text (Cleaned)", context[:2000], height=300)
 
-        # Generate a summary
-        st.info("Generating summary...")
+        # Summarize the text in chunks
+        st.info("Generating summary for each chunk...")
         try:
-            summary = summarizer(context, max_length=100, min_length=25, do_sample=False)
+            chunks = list(chunk_text(context, max_tokens=512))
+            summaries = [
+                summarizer(chunk, max_length=100, min_length=25, do_sample=False)[0]['summary_text']
+                for chunk in chunks
+            ]
+            final_summary = " ".join(summaries)
             st.header("Summary")
-            st.write(summary[0]['summary_text'])
+            st.write(final_summary)
         except Exception as e:
             st.error(f"Error generating summary: {e}")
