@@ -53,7 +53,7 @@ if url:
     context = extract_text_from_url(url)
     if context:
         st.success("Text extracted and cleaned successfully!")
-        st.text_area("Extracted Text (Cleaned)", context[:2000], height=300)
+        #st.text_area("Extracted Text (Cleaned)", context[:2000], height=300)
 
         # Generate a summary
         st.info("Generating summary...")
